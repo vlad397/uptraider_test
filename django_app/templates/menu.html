@@ -1,0 +1,34 @@
+<h3>Menus</h3>
+{% load mptt_tags %}
+<ul>
+    {% recursetree nodes %}
+        <li>
+            <a href="/menu/{{ node.id }}/">
+            {{ node.name }}
+            {{ node.id }}
+            {{ node.level }}
+            </a>
+            {% if node.is_root_node %}
+                {% ifequal node.id root_menu_id %}
+                    {% if not node.is_leaf_node %}
+                        <ul class="children">
+                            {{ children }}
+                        </ul>
+                    {% endif %}
+                {% endifequal %}
+            {% else %}
+                {% if not node.is_leaf_node %}
+                    {% if current_menu.id == node.id %}
+                        <ul class="children">
+                            {{ children }}
+                        </ul>
+                    {% elif node.level < current_menu.level %}
+                        <ul class="children">
+                            {{ children }}
+                        </ul>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </li>
+    {% endrecursetree %}
+</ul>
